@@ -10,14 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- BRAND VARIABLES --- */
+        /* --- PREMIUM BRAND VARIABLES --- */
         :root {
-            --bg-base: #050505; /* Pure Pitch black */
-            --bg-surface: rgba(30, 30, 30, 0.6); /* Smoked glass surface */
-            --text-main: #f0f0f0; /* Crisp white */
-            --text-muted: #a0a0a0; /* Lighter grey for better readability */
-            --accent: #ff6300; /* The vibrant NLC Orange */
-            --border-subtle: rgba(255, 255, 255, 0.08); /* Faint white border for glass edge */
+            --bg-base: #030303; /* Deeper pitch black */
+            --bg-surface: rgba(18, 18, 18, 0.55); /* Darker glass for better contrast */
+            --text-main: #f5f5f7; /* Apple's crisp off-white */
+            --text-muted: #86868b; /* Apple's premium grey */
+            --accent: #ff6300; /* NLC Orange */
+            --glass-border-light: rgba(255, 255, 255, 0.12); /* Highlights for the machined edge */
+            --glass-border-dark: rgba(255, 255, 255, 0.02); /* Shadows for the machined edge */
         }
 
         * {
@@ -30,12 +31,17 @@
             background-color: var(--bg-base);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased; 
+            /* Subtle Ambient Glow Fixed to Background */
+            background-image: 
+                radial-gradient(circle at 85% 10%, rgba(255, 99, 0, 0.06), transparent 40%),
+                radial-gradient(circle at 10% 60%, rgba(255, 99, 0, 0.04), transparent 50%);
+            background-attachment: fixed;
         }
 
-        /* --- TYPOGRAPHY UPGRADES --- */
+        /* --- TYPOGRAPHY --- */
         h1, h2, h3, .splash-title, .brand-logo {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
@@ -43,6 +49,28 @@
 
         .text-white { color: #ffffff; }
         .text-orange { color: var(--accent); }
+
+        /* Premium Text Gradient Class */
+        .text-gradient {
+            background: linear-gradient(135deg, #ff9100 0%, #ff4000 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: var(--accent); /* Fallback */
+            display: inline-block;
+        }
+
+        /* --- SCROLL REVEAL ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); /* Silky smooth ease-out */
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* --- SPLASH SCREEN (THE GATE) --- */
         #splash-screen {
@@ -57,7 +85,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease-in-out, visibility 1s;
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.2s;
         }
 
         .splash-title {
@@ -67,37 +95,39 @@
             text-align: center;
         }
 
-        .splash-title .text-white {
-            font-weight: 800;
-        }
-
-        .splash-title .text-orange {
-            font-weight: 300;
-            letter-spacing: 4px;
+        .splash-title .text-white { font-weight: 800; }
+        .splash-title .text-orange { 
+            font-weight: 300; 
+            letter-spacing: 4px; 
         }
 
         .enter-btn {
             font-family: 'Montserrat', sans-serif;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--text-main);
             border: 1px solid var(--text-muted);
-            padding: 15px 40px;
+            padding: 16px 45px;
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .enter-btn:hover {
             border-color: var(--accent);
-            background-color: var(--accent);
-            color: #000;
-            box-shadow: 0 0 20px rgba(255, 99, 0, 0.3);
+            background-color: rgba(255, 99, 0, 0.1);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 99, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .enter-btn:active {
+            transform: scale(0.96); /* Tactile press effect */
         }
 
         /* --- MAIN CONTENT (THE DOJO) --- */
@@ -129,9 +159,6 @@
             text-align: center;
         }
 
-        .brand-logo .text-white { font-weight: 800; }
-        .brand-logo .text-orange { font-weight: 300; }
-
         .subtitle {
             font-style: italic;
             color: var(--text-muted);
@@ -147,11 +174,13 @@
             margin-bottom: 1em;
             font-weight: 600;
             color: var(--text-main);
+            font-size: 1.6rem;
         }
 
         h3 {
             letter-spacing: 1px;
             font-weight: 600;
+            font-size: 1.2rem;
         }
 
         p {
@@ -166,21 +195,36 @@
             font-weight: 600;
         }
 
-        /* --- GLASSMORPHISM BOXES --- */
+        /* --- MACHINED GLASSMORPHISM BOXES --- */
         .package, .code-box, .apply-box {
             background: var(--bg-surface);
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border-light);
+            border-left: 1px solid var(--glass-border-light);
+            border-right: 1px solid var(--glass-border-dark);
+            border-bottom: 1px solid var(--glass-border-dark);
+            border-radius: 12px; /* Slightly softer corners for premium feel */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
         }
 
         /* Package Cards */
         .package {
-            border-left: 3px solid var(--accent); 
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 35px;
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* The Orange Accent Line */
+        .package::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff9100, #ff4000);
         }
 
         .package h3 {
@@ -192,15 +236,15 @@
         .price {
             font-family: 'Montserrat', sans-serif;
             font-weight: 800;
-            color: var(--accent);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 99, 0, 0.2);
+            text-shadow: 0 0 15px rgba(255, 99, 0, 0.15);
         }
 
         .package p {
             font-size: 1rem;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            line-height: 1.7;
         }
 
         ul {
@@ -211,8 +255,8 @@
         }
 
         li {
-            margin-bottom: 12px;
-            padding-left: 15px;
+            margin-bottom: 14px;
+            padding-left: 20px;
             position: relative;
         }
 
@@ -222,6 +266,7 @@
             position: absolute;
             left: 0;
             top: 0;
+            font-size: 1.1rem;
         }
 
         /* The Arsenal (Codes Section) */
@@ -239,34 +284,38 @@
         }
 
         .code-box {
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
         .code-box h4 {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
         .promo-code {
             display: inline-block;
-            background-color: rgba(0, 0, 0, 0.5); 
-            color: var(--accent);
-            padding: 8px 15px;
+            background-color: rgba(0, 0, 0, 0.8); 
+            color: var(--text-main);
+            padding: 10px 20px;
             font-family: monospace;
             font-size: 1.2rem;
             font-weight: bold;
-            border-radius: 4px;
-            margin: 10px 0;
-            border: 1px dashed var(--accent);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-            letter-spacing: 1px;
+            border-radius: 6px;
+            margin: 10px 0 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,1);
+            letter-spacing: 2px;
         }
 
-        /* Links & Buttons */
+        .promo-code span {
+            color: var(--accent);
+        }
+
+        /* Links & Fluid Buttons */
         a {
             color: var(--accent);
             text-decoration: none;
@@ -282,39 +331,47 @@
             display: inline-block;
             border: 1px solid var(--accent);
             color: var(--text-main);
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 0.85rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-radius: 50px;
-            margin-top: 10px;
-            background: rgba(255, 99, 0, 0.05);
-            transition: all 0.3s ease;
+            background: rgba(255, 99, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .btn:hover {
             background-color: var(--accent);
             color: #000;
             font-weight: 800;
-            box-shadow: 0 0 15px rgba(255, 99, 0, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 99, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: scale(0.96); /* Premium tactile feedback */
         }
 
         hr {
             border: 0;
             height: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             margin: 60px 0;
         }
 
         /* Apply Section */
         .apply-box {
-            padding: 30px;
+            padding: 35px;
             text-align: center;
+        }
+        
+        .apply-box h2 {
+            margin-top: 0;
         }
 
         .contact-links {
-            margin-top: 20px;
+            margin-top: 30px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -331,17 +388,20 @@
         /* --- MOBILE RESPONSIVENESS FIX --- */
         @media (max-width: 600px) {
             .splash-title {
-                font-size: 1.8rem; /* Reduces overall size on mobile */
+                font-size: 1.8rem;
                 letter-spacing: 1px;
             }
-            
             .splash-title .text-orange {
-                letter-spacing: 2px; /* Reduces the wide spacing slightly to fit the screen */
+                letter-spacing: 2px; 
             }
-
-            /* Proactive fix to ensure the footer logo also fits */
             .brand-logo {
                 font-size: 1.6rem !important; 
+            }
+            .package {
+                padding: 25px;
+            }
+            h2 {
+                font-size: 1.4rem;
             }
         }
     </style>
@@ -355,25 +415,28 @@
 
     <div id="main-content">
         
-        <img src="nlcp-logo.gif" alt="NLC Performance Logo" class="main-logo">
+        <img src="nlcp-logo.gif" alt="NLC Performance Logo" class="main-logo reveal">
         
-        <div class="apply-box">
-            <h2>The Screening</h2>
-            <p>I do not take on every athlete who asks. If you are ready to stop chasing fatigue, fix your chassis, and enter the Tactical Readiness System, submit your request below to begin the triage.</p>
+        <div class="apply-box reveal">
+            <h2>Who We Build</h2>
+            <p>NLC Performance is a private coaching practice built exclusively for <strong>contact athletes (Rugby, BJJ, MMA)</strong> and high-stress operators. If you are looking for a generic, fatigue-chasing fitness class, leave now.</p>
+            
+            <p style="margin-top: 25px;"><strong>What is the <span class="text-gradient">TRS</span>?</strong><br>
+            The Tactical Readiness System is a clinical performance framework. We combine daily autonomic tracking, extreme isometrics, and eccentric load management to rebuild broken joints and forge elite kinetic output. We do not guess; your biology dictates the daily protocol.</p>
             
             <div class="contact-links">
-                <a href="mailto:neil@nlcperformance.com" class="btn">Initiate Contact via Email</a>
-                <a href="https://www.linkedin.com/in/neil-lester-card-nlcperformance" target="_blank" class="btn">Initiate Contact via LinkedIn</a>
+                <a href="mailto:neil@nlcperformance.com" class="btn">Contact The Coach</a>
+                <a href="https://www.linkedin.com/in/neil-lester-card-nlcperformance" target="_blank" class="btn">View Credentials</a>
             </div>
         </div>
 
-        <hr>
+        <hr class="reveal">
 
-        <h2>The Standards</h2>
+        <h2 class="reveal">The Standards</h2>
 
-        <div class="package">
+        <div class="package reveal">
             <h3>1. 30-Day TRS Induction</h3>
-            <div class="price">£60.00 | One-Off Payment</div>
+            <div class="price text-gradient">£60.00 | One-Off Payment</div>
             <p><em>Do not sign a contract until you prove the system works. Your entry into the system begins with a mandatory 30-day biological reset. You complete the clinical Triage Form, we build your profile, and Day 1 begins.</em></p>
             <ul>
                 <li><strong>Biological Triage:</strong> Automatic placement into your specific TRS Tier (Rebuild, Function, Capacity, or Performance).</li>
@@ -382,9 +445,9 @@
             </ul>
         </div>
 
-        <div class="package">
+        <div class="package reveal">
             <h3>2. TRS Standard (Online)</h3>
-            <div class="price">£75.00 / Month | Rolling Contract</div>
+            <div class="price text-gradient">£75.00 / Month | Rolling Contract</div>
             <p><em>The complete digital architecture of the Tactical Readiness System. Built for remote athletes who need elite programming without the coaching overhead.</em></p>
             <ul>
                 <li><strong>Everfit Access:</strong> Full access to the Daily App and your rolling TRS programming.</li>
@@ -394,9 +457,9 @@
             </ul>
         </div>
 
-        <div class="package">
+        <div class="package reveal">
             <h3>3. TRS Premium (Hybrid & In-Person)</h3>
-            <div class="price">£150.00 / Month | Limited Roster</div>
+            <div class="price text-gradient">£150.00 / Month | Limited Roster</div>
             <p><em>For local combat athletes and tactical operators requiring absolute maximal output. This tier grants you direct access to our clinical hardware and advanced diagnostic coaching.</em></p>
             <ul>
                 <li><strong>Everything in Standard.</strong></li>
@@ -407,47 +470,47 @@
             </ul>
         </div>
 
-        <hr>
+        <hr class="reveal">
 
-        <h2>The Ethos: Biology Dictates Protocol</h2>
-        <p>We do not guess, and we do not force athletes into generic, fatigue-chasing programs. The Tactical Readiness System (TRS) relies on your current physiological state to dictate your training volume.</p>
+        <h2 class="reveal">The Ethos: Biology Dictates Protocol</h2>
+        <p class="reveal">We do not guess, and we do not force athletes into generic, fatigue-chasing programs. The <span class="text-gradient">Tactical Readiness System</span> relies on your current physiological state to dictate your training volume.</p>
         
-        <p><strong>The Triage Logic</strong><br>
+        <p class="reveal"><strong>The Triage Logic</strong><br>
         When you enter the system, your central nervous system fatigue, structural integrity, and force-absorption capacity are clinically measured. Based on your data, you are placed into the exact tier your body requires:</p>
         
-        <ul>
+        <ul class="reveal">
             <li><strong>Rebuild:</strong> Structural repair and pain mitigation.</li>
             <li><strong>Function:</strong> Bracing mechanics and baseline armor.</li>
             <li><strong>Capacity:</strong> Extreme isometrics and eccentric engine building.</li>
             <li><strong>Performance:</strong> High-velocity output and elite autonomic control.</li>
         </ul>
 
-        <hr>
+        <hr class="reveal">
 
-        <h2>The Arsenal (Athlete Perks)</h2>
-        <p>NLC Performance athletes get access to the tools I personally use and trust for recovery. Use the codes below to support the standard.</p>
+        <h2 class="reveal">The Arsenal (Athlete Perks)</h2>
+        <p class="reveal">NLC Performance athletes get access to the tools I personally use and trust for recovery. Use the codes below to support the standard.</p>
         
         <div class="code-grid">
-            <div class="code-box">
+            <div class="code-box reveal">
                 <h4>Awesome Supplements</h4>
-                <div class="promo-code">LESTERCARD10</div><br>
+                <div class="promo-code">LESTER<span>CARD10</span></div><br>
                 <a href="https://awesomesupplements.co.uk/?ref=NLCPerformance&utm_campaign=affiliate_promotion&utm_medium=affiliate&utm_source=gapaffiliate" target="_blank" class="btn">Shop Awesome</a>
             </div>
 
-            <div class="code-box">
+            <div class="code-box reveal">
                 <h4>Vivobarefoot</h4>
-                <div class="promo-code">NEILLESTERCARD15</div><br>
+                <div class="promo-code">NEILLESTER<span>CARD15</span></div><br>
                 <a href="https://glnk.io/3xyx1/neil" target="_blank" class="btn">Shop Vivo</a>
             </div>
         </div>
 
-        <div class="code-box" style="margin-top: 20px;">
+        <div class="code-box reveal" style="margin-top: 20px;">
             <h4>Internal Tools</h4>
             <p style="font-size: 0.9rem; margin-top: 10px;">The NLC Quick & The Dead Protocol Timer</p>
             <a href="https://nlcperformance.github.io/NLC-Performance-Timer/" target="_blank" class="btn">Access Timer</a>
         </div>
 
-        <div style="text-align: center; margin-top: 100px; padding-bottom: 20px;">
+        <div class="reveal" style="text-align: center; margin-top: 100px; padding-bottom: 20px;">
             <div class="subtitle" style="margin-bottom: 20px;">Adapt. Recover. Master.</div>
             <h1 class="brand-logo" style="font-size: 1.5rem; margin-top: 0;"><span class="text-white">NLC</span> <span class="text-orange">PERFORMANCE</span></h1>
             <p style="font-size: 0.85rem; color: var(--text-muted);">&copy; 2026 NLC Performance</p>
@@ -456,7 +519,7 @@
     </div>
 
     <script>
-        // JavaScript to handle the Splash Screen fade out
+        // --- 1. Handle Splash Screen Fade Out ---
         function enterDojo() {
             const splash = document.getElementById('splash-screen');
             const mainContent = document.getElementById('main-content');
@@ -467,7 +530,34 @@
                 splash.style.display = 'none';
                 mainContent.classList.add('visible');
                 window.scrollTo(0,0);
+                
+                // Trigger the scroll observer after entering
+                initScrollReveal();
             }, 1000); 
+        }
+
+        // --- 2. Intersection Observer (Scroll Reveal Animations) ---
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOptions = {
+                threshold: 0.1, // Trigger when 10% of element is visible
+                rootMargin: "0px 0px -50px 0px" // Trigger slightly before it hits the bottom
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once revealed so it doesn't animate out and in repeatedly
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
         }
     </script>
 </body>
